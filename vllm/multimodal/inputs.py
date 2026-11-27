@@ -4,7 +4,7 @@
 from abc import ABC, abstractmethod
 from collections import UserDict, defaultdict
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cached_property, partial
 from itertools import accumulate
 from typing import (
@@ -368,6 +368,11 @@ class MultiModalFeatureSpec:
     The location of the `modality` tokens corresponding to this item
     in the prompt, e.g., `PlaceholderRange(offset=2, length=336)`.
     """
+
+    _stripped_covered: "tuple[bool, MultiModalFeatureSpec] | None" = field(
+        default=None, init=False, repr=False, compare=False
+    )
+    """Memo of `strip_covered_mm_data`: `(uses_mrope, stripped copy)`."""
 
     mm_hash: str | None = None
     """The hash for caching processor outputs (without LoRA prefix)."""
